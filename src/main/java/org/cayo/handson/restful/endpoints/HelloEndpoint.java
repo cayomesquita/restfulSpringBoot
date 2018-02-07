@@ -7,7 +7,7 @@ import javax.ws.rs.Produces;
 import org.springframework.stereotype.Component;
 
 @Component
-@Path("/")
+@Path("/hello")
 public class HelloEndpoint {
 
     @GET

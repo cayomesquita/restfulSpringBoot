@@ -19,7 +19,7 @@ public class ImageEndpoint {
 
     @GET
     public Response getImages() {
-        return Response.ok("all products").build();
+        return Response.ok("all imagens").build();
     }
 
     @POST
@@ -30,7 +30,7 @@ public class ImageEndpoint {
     @GET
     @Path("/{imageId}")
     public Response getProductById(@PathParam("productId") Integer productId, @PathParam("imageId") Integer imageId) {
-        return Response.ok(String.format("Image add (%d)", imageId)).build();
+        return Response.ok(String.format("Image (%d)", imageId)).build();
     }
     
     @PUT

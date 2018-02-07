@@ -29,7 +29,7 @@ public class Product {
 	@Column
 	private String description;
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
 	@JoinColumn(name = "ID_PARENT", insertable = false, updatable = false, nullable = true)
 	private Product parent;
 
@@ -72,6 +72,20 @@ public class Product {
 	 */
 	public String getDescription() {
 		return description;
+	}
+
+	/**
+	 * @return the parent
+	 */
+	public Product getParent() {
+		return parent;
+	}
+
+	/**
+	 * @param parent the parent to set
+	 */
+	public void setParent(Product parent) {
+		this.parent = parent;
 	}
 
 	/**

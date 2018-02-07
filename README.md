@@ -13,12 +13,12 @@ Product also has a Many to One relationship with itself (Many Products to one Pa
 
 1) Create, update and delete products
 2) Create, update and delete images
-3) Get all products excluding relationships (child products, images) 
-4) Get all products including specified relationships (child product and/or images) 
-5) Same as 3 using specific product identity 
-6) Same as 4 using specific product identity 
-7) Get set of child products for specific product 
-8) Get set of images for specific product
+3) Get all products excluding relationships (child products, images) /products
+4) Get all products including specified relationships (child product and/or images) /products?P=Y&I=Y
+5) Same as 3 using specific product identity /products/{id}
+6) Same as 4 using specific product identity /products/{id}?P=Y&I=Y
+7) Get set of child products for specific product /products/{id}/children
+8) Get set of images for specific product /products/{id}/images
 
 
 3º Build JPA/Hibernate classes using annotations to persist these objects in the database 
