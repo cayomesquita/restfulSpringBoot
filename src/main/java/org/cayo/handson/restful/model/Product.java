@@ -29,11 +29,11 @@ public class Product {
 	@Column
 	private String description;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
-	@JoinColumn(name = "ID_PARENT", insertable = false, updatable = false, nullable = true)
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "ID_PARENT", insertable = true, updatable = true, nullable = true)
 	private Product parent;
 
-	@OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
 	@JoinColumn(name = "ID_PRODUCT", referencedColumnName = "ID_PRODUCT")
 	private Set<Image> imagens;
 

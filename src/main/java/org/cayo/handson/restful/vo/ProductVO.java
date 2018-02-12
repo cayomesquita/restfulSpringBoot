@@ -22,13 +22,16 @@ public class ProductVO extends AbstractBaseVO{
 
 	private Set<Image> imagens;
 
-	public static ProductVO getInstace(Product entity, boolean retriveParent, boolean retriveImages) {
+	public static ProductVO getInstace(Product entity, boolean loadParent, boolean loadImages) {
+		if(entity == null) {
+			return null;
+		}
 		ProductVO vo = new ProductVO();
 		vo.setId(entity.getId());
 		vo.setDescription(entity.getDescription());
 		vo.setName(entity.getName());
-		vo.setParent((retriveParent)?ProductVO.getInstace(entity.getParent(), false, false):null);
-		vo.setImagens((retriveImages)?null:null);
+		vo.setParent((loadParent)?ProductVO.getInstace(entity.getParent(), false, false):null);
+		vo.setImagens((loadImages)?null:null);
 		return vo;
 	}
 	
