@@ -3,6 +3,7 @@ package org.cayo.handson.restful.endpoints;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -24,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Path("/products")
 @Produces("application/json")
+@Consumes("application/json")
 public class ProductEndpoint {
 
 	@Autowired
@@ -35,6 +37,9 @@ public class ProductEndpoint {
 			@DefaultValue("false") @QueryParam("load-image") boolean loadImage) {
 		List<ProductVO> result = repository.findAll().stream().map(x -> ProductVO.getInstace(x, loadParent, loadImage))
 				.collect(Collectors.toList());
+		if (result == null) {
+			return Response.noContent().build();
+		}
 		return Response.ok(result).build();
 	}
 
@@ -56,24 +61,44 @@ public class ProductEndpoint {
 			@DefaultValue("false") @QueryParam("load-parent") boolean loadParent,
 			@DefaultValue("false") @QueryParam("load-image") boolean loadImage) {
 		ProductVO vo = ProductVO.getInstace(repository.findOne(id), loadParent, loadImage);
-		if(vo == null) {
+		if (vo == null) {
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 		return Response.ok(vo).build();
 	}
 
+	@GET
+	@Path("/{productId}/children")
+	public Response getProductsChildren(@PathParam("productId") Integer id) {
+		List<ProductVO> result = repository.findChildrenByIdParent(id).stream()
+				.map(x -> ProductVO.getInstace(x, false, false)).collect(Collectors.toList());
+		return Response.ok(result).build();
+	}
+
 	@PUT
 	@Path("/{productId}")
-	public Response updateProduct(@PathParam("productId") Integer id) {
-		return Response.ok(String.format("Product updated (%d)", id)).build();
+	@Transactional
+	public Response updateProduct(Product productInput, @PathParam("productId") Integer id) {
+		Product product = repository.findOne(id);
+		if (product == null) {
+			return insertProduct(productInput);
+		} else {
+			product.setName(productInput.getName());
+			product.setDescription(productInput.getDescription());
+			product.setParent(productInput.getParent());
+			product.getImagens().clear();
+			product.getImagens().addAll(productInput.getImagens());
+			repository.save(product);
+		}
+		return Response.ok().build();
 	}
 
 	@DELETE
 	@Path("/{productId}")
 	public Response deleteProduct(@PathParam("productId") Integer id) {
-		if(repository.exists(id)){
+		if (repository.exists(id)) {
 			repository.delete(id);
-			return Response.ok().build();
+			return Response.noContent().build();
 		}
 		return Response.status(Response.Status.NOT_FOUND).build();
 	}

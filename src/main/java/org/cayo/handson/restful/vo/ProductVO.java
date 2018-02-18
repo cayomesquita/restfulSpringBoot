@@ -1,8 +1,8 @@
 package org.cayo.handson.restful.vo;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
-import org.cayo.handson.restful.model.Image;
 import org.cayo.handson.restful.model.Product;
 
 public class ProductVO extends AbstractBaseVO{
@@ -20,7 +20,7 @@ public class ProductVO extends AbstractBaseVO{
 
 	private ProductVO parent;
 
-	private Set<Image> imagens;
+	private Set<ImageVO> imagens;
 
 	public static ProductVO getInstace(Product entity, boolean loadParent, boolean loadImages) {
 		if(entity == null) {
@@ -31,7 +31,7 @@ public class ProductVO extends AbstractBaseVO{
 		vo.setDescription(entity.getDescription());
 		vo.setName(entity.getName());
 		vo.setParent((loadParent)?ProductVO.getInstace(entity.getParent(), false, false):null);
-		vo.setImagens((loadImages)?null:null);
+		vo.setImagens((loadImages)?entity.getImagens().stream().map(x->ImageVO.getInstace(x)).collect(Collectors.toSet()):null);
 		return vo;
 	}
 	
@@ -94,14 +94,14 @@ public class ProductVO extends AbstractBaseVO{
 	/**
 	 * @return the imagens
 	 */
-	public Set<Image> getImagens() {
+	public Set<ImageVO> getImagens() {
 		return imagens;
 	}
 
 	/**
 	 * @param imagens the imagens to set
 	 */
-	public void setImagens(Set<Image> imagens) {
+	public void setImagens(Set<ImageVO> imagens) {
 		this.imagens = imagens;
 	}
 

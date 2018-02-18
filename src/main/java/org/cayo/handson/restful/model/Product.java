@@ -1,5 +1,6 @@
 package org.cayo.handson.restful.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -33,7 +34,7 @@ public class Product {
 	@JoinColumn(name = "ID_PARENT", insertable = true, updatable = true, nullable = true)
 	private Product parent;
 
-	@OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
+	@OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, cascade=CascadeType.ALL)
 	@JoinColumn(name = "ID_PRODUCT", referencedColumnName = "ID_PRODUCT")
 	private Set<Image> imagens;
 
@@ -100,6 +101,9 @@ public class Product {
 	 * @return the imagens
 	 */
 	public Set<Image> getImagens() {
+		if(imagens == null) {
+			imagens = new HashSet<Image>();
+		}
 		return imagens;
 	}
 
