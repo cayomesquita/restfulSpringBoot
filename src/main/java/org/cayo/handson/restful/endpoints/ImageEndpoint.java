@@ -14,11 +14,11 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
+import org.cayo.handson.restful.hateoas.ImageResource;
 import org.cayo.handson.restful.model.Image;
 import org.cayo.handson.restful.model.Product;
 import org.cayo.handson.restful.persistence.repository.ImageRepository;
 import org.cayo.handson.restful.persistence.repository.ProductRepository;
-import org.cayo.handson.restful.vo.ImageVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +38,7 @@ public class ImageEndpoint {
 	@GET
 	@Transactional
 	public Response getProductImages(@PathParam("productId") Integer idProduct) {
-		Set<ImageVO> result = repository.findAllProductImages(idProduct).stream().map(x -> ImageVO.getInstace(x))
+		Set<ImageResource> result = repository.findAllProductImages(idProduct).stream().map(x -> ImageResource.getInstace(x))
 				.collect(Collectors.toSet());
 		if (result.isEmpty()) {
 			return Response.noContent().build();
@@ -59,7 +59,7 @@ public class ImageEndpoint {
 	@Path("/{imageId}")
 	@Transactional
 	public Response getProductById(@PathParam("productId") Integer productId, @PathParam("imageId") Integer imageId) {
-		ImageVO result = ImageVO.getInstace(repository.findOneByProductIdAndImageId(productId, imageId));
+		ImageResource result = ImageResource.getInstace(repository.findOneByProductIdAndImageId(productId, imageId));
 		if (result == null) {
 			return Response.noContent().build();
 		}

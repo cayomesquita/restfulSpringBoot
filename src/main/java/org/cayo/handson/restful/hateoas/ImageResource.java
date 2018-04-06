@@ -1,41 +1,41 @@
-package org.cayo.handson.restful.vo;
+package org.cayo.handson.restful.hateoas;
 
 import org.cayo.handson.restful.model.Image;
 
-public class ImageVO extends AbstractBaseVO {
+public class ImageResource extends AbstractBaseResource<ImageResource> {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private Integer id;
+	private Integer idImage;
 
 	private String description;
 
-	public static ImageVO getInstace(Image entity) {
+	public static ImageResource getInstace(Image entity) {
 		if (entity == null) {
 			return null;
 		}
-		ImageVO vo = new ImageVO();
+		ImageResource vo = new ImageResource();
 		vo.setId(entity.getId());
 		vo.setDescription(entity.getDescription());
 		return vo;
 	}
 
 	/**
-	 * @return the id
+	 * @return the idImage
 	 */
-	public Integer getId() {
-		return id;
+	public Integer getIdImage() {
+		return idImage;
 	}
 
 	/**
-	 * @param id
-	 *            the id to set
+	 * @param idImage
+	 *            the idImage to set
 	 */
-	public void setId(Integer id) {
-		this.id = id;
+	public void setId(Integer idImage) {
+		this.idImage = idImage;
 	}
 
 	/**
@@ -63,7 +63,7 @@ public class ImageVO extends AbstractBaseVO {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((idImage == null) ? 0 : idImage.hashCode());
 		return result;
 	}
 
@@ -78,20 +78,26 @@ public class ImageVO extends AbstractBaseVO {
 			return true;
 		if (obj == null)
 			return false;
-		if (!(obj instanceof ImageVO))
+		if (!(obj instanceof ImageResource))
 			return false;
-		ImageVO other = (ImageVO) obj;
+		ImageResource other = (ImageResource) obj;
 		if (description == null) {
 			if (other.description != null)
 				return false;
 		} else if (!description.equals(other.description))
 			return false;
-		if (id == null) {
-			if (other.id != null)
+		if (idImage == null) {
+			if (other.idImage != null)
 				return false;
-		} else if (!id.equals(other.id))
+		} else if (!idImage.equals(other.idImage))
 			return false;
 		return true;
+	}
+
+	@Override
+	public ImageResource generateLinks() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

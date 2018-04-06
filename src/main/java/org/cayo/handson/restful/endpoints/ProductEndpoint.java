@@ -15,9 +15,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
+import org.cayo.handson.restful.hateoas.ProductResource;
 import org.cayo.handson.restful.model.Product;
 import org.cayo.handson.restful.persistence.repository.ProductRepository;
-import org.cayo.handson.restful.vo.ProductVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,7 +35,7 @@ public class ProductEndpoint {
 	@Transactional
 	public Response getProducts(@DefaultValue("false") @QueryParam("load-parent") boolean loadParent,
 			@DefaultValue("false") @QueryParam("load-image") boolean loadImage) {
-		List<ProductVO> result = repository.findAll().stream().map(x -> ProductVO.getInstace(x, loadParent, loadImage))
+		List<ProductResource> result = repository.findAll().stream().map(x -> ProductResource.getInstace(x, loadParent, loadImage))
 				.collect(Collectors.toList());
 		if (result == null) {
 			return Response.noContent().build();
@@ -60,18 +60,18 @@ public class ProductEndpoint {
 	public Response getProductById(@PathParam("productId") Integer id,
 			@DefaultValue("false") @QueryParam("load-parent") boolean loadParent,
 			@DefaultValue("false") @QueryParam("load-image") boolean loadImage) {
-		ProductVO vo = ProductVO.getInstace(repository.findOne(id), loadParent, loadImage);
-		if (vo == null) {
+		ProductResource resource = ProductResource.getInstace(repository.findOne(id), loadParent, loadImage);
+		if (resource == null) {
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}
-		return Response.ok(vo).build();
+		return Response.ok(resource).build();
 	}
 
 	@GET
 	@Path("/{productId}/children")
 	public Response getProductsChildren(@PathParam("productId") Integer id) {
-		List<ProductVO> result = repository.findChildrenByIdParent(id).stream()
-				.map(x -> ProductVO.getInstace(x, false, false)).collect(Collectors.toList());
+		List<ProductResource> result = repository.findChildrenByIdParent(id).stream()
+				.map(x -> ProductResource.getInstace(x, false, false)).collect(Collectors.toList());
 		return Response.ok(result).build();
 	}
 
