@@ -4,9 +4,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.cayo.handson.restful.model.Product;
+import org.springframework.hateoas.Link;
 
-public class ProductResource extends AbstractBaseResource<ProductResource>{
-	
+public class ProductResource extends AbstractBaseResource {
+
 	/**
 	 * 
 	 */
@@ -23,18 +24,18 @@ public class ProductResource extends AbstractBaseResource<ProductResource>{
 	private Set<ImageResource> imagens;
 
 	public static ProductResource getInstace(Product entity, boolean loadParent, boolean loadImages) {
-		if(entity == null) {
+		if (entity == null) {
 			return null;
 		}
 		ProductResource resource = new ProductResource();
 		resource.setIdProduct(entity.getId());
 		resource.setDescription(entity.getDescription());
 		resource.setName(entity.getName());
-		resource.setParent((loadParent)?ProductResource.getInstace(entity.getParent(), false, false):null);
-		resource.setImagens((loadImages)?entity.getImagens().stream().map(x->ImageResource.getInstace(x)).collect(Collectors.toSet()):null);
+		resource.setParent((loadParent) ? ProductResource.getInstace(entity.getParent(), false, false) : null);
+		resource.setImagens((loadImages) ? entity.getImagens().stream().map(x -> ImageResource.getInstace(x)).collect(Collectors.toSet()) : null);
 		return resource;
 	}
-	
+
 	/**
 	 * @return the idProduct
 	 */
@@ -43,7 +44,8 @@ public class ProductResource extends AbstractBaseResource<ProductResource>{
 	}
 
 	/**
-	 * @param idProduct the idProduct to set
+	 * @param idProduct
+	 *            the idProduct to set
 	 */
 	public void setIdProduct(Integer idProduct) {
 		this.idProduct = idProduct;
@@ -57,7 +59,8 @@ public class ProductResource extends AbstractBaseResource<ProductResource>{
 	}
 
 	/**
-	 * @param name the name to set
+	 * @param name
+	 *            the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -71,7 +74,8 @@ public class ProductResource extends AbstractBaseResource<ProductResource>{
 	}
 
 	/**
-	 * @param description the description to set
+	 * @param description
+	 *            the description to set
 	 */
 	public void setDescription(String description) {
 		this.description = description;
@@ -85,7 +89,8 @@ public class ProductResource extends AbstractBaseResource<ProductResource>{
 	}
 
 	/**
-	 * @param parent the parent to set
+	 * @param parent
+	 *            the parent to set
 	 */
 	public void setParent(ProductResource parent) {
 		this.parent = parent;
@@ -99,16 +104,11 @@ public class ProductResource extends AbstractBaseResource<ProductResource>{
 	}
 
 	/**
-	 * @param imagens the imagens to set
+	 * @param imagens
+	 *            the imagens to set
 	 */
 	public void setImagens(Set<ImageResource> imagens) {
 		this.imagens = imagens;
-	}
-
-	@Override
-	public ProductResource generateLinks() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

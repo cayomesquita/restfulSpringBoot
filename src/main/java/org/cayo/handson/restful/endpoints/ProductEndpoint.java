@@ -16,9 +16,11 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
 import org.cayo.handson.restful.hateoas.ProductResource;
+import org.cayo.handson.restful.hateoas.ResourceAssembler;
 import org.cayo.handson.restful.model.Product;
 import org.cayo.handson.restful.persistence.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,8 +37,8 @@ public class ProductEndpoint {
 	@Transactional
 	public Response getProducts(@DefaultValue("false") @QueryParam("load-parent") boolean loadParent,
 			@DefaultValue("false") @QueryParam("load-image") boolean loadImage) {
-		List<ProductResource> result = repository.findAll().stream().map(x -> ProductResource.getInstace(x, loadParent, loadImage))
-				.collect(Collectors.toList());
+		List<ProductResource> result = repository.findAll().stream()
+				.map(x -> ProductResource.getInstace(x, loadParent, loadImage)).collect(Collectors.toList());
 		if (result == null) {
 			return Response.noContent().build();
 		}
@@ -64,7 +66,9 @@ public class ProductEndpoint {
 		if (resource == null) {
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}
-		return Response.ok(resource).build();
+		ResourceAssembler assembler = ResourceAssembler.getInstence().addResource(resource,
+				new Link("http://localhost:8080/api/products/" + id, Link.REL_SELF));
+		return Response.ok(assembler.generate()).build();
 	}
 
 	@GET

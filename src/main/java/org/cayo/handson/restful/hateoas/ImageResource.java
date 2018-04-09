@@ -2,7 +2,7 @@ package org.cayo.handson.restful.hateoas;
 
 import org.cayo.handson.restful.model.Image;
 
-public class ImageResource extends AbstractBaseResource<ImageResource> {
+public class ImageResource extends AbstractBaseResource {
 
 	/**
 	 * 
@@ -92,12 +92,6 @@ public class ImageResource extends AbstractBaseResource<ImageResource> {
 		} else if (!idImage.equals(other.idImage))
 			return false;
 		return true;
-	}
-
-	@Override
-	public ImageResource generateLinks() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }
